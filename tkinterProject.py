@@ -1,22 +1,63 @@
 from tkinter import *
-#from binary_lesson_and_test import *
-from LoginTest import *
+from tkinter import ttk
+import tkinter as tk
+import pymysql
+#from Login import *
 
-# import tkinter as tk
+LARGE_FONT=("Verdana", 12)
+
+
+
+def verify_details(Page,UN,PW):
+    db = pymysql.connect(host="csmysql.cs.cf.ac.uk", user="c1531722", passwd="pE9zby3j", db="c1531722")
+    cursor = db.cursor()
+    cursor.execute("SELECT Username, Password, Admin FROM Accounts")
+
+    InputUN = UN.get()
+    InputPW = PW.get()
+    for UN, PW, ADM in cursor:
+        if UN == InputUN and PW == InputPW:
+            app.show_frame("student_homepage")	#needs to distinguish between lecturers/students
+
+            break
+    if not(UN == InputUN and PW == InputPW):
+        Page.unsuccessful_login()
+
+    db.close()
+
+def insert_account(UN,PW,Admin):
+    db = pymysql.connect(host="csmysql.cs.cf.ac.uk", user="c1531722", passwd="pE9zby3j", db="c1531722")
+    cursor = db.cursor()
+    cursor.execute("SELECT ID FROM Accounts ORDER BY ID DESC")
+    ID = cursor.fetchone()
+    InputUN = UN.get()
+    InputPW = PW.get()
+    cursor.execute('''INSERT INTO `c1531722`.`Accounts` (`ID`, `Username`, `Password`, `Admin`) VALUES (%s, %s, %s, %s);''',(ID[0]+1,InputUN,InputPW,Admin))
+    db.commit()
+    db.close()
+
+
+
+
+
 rights = 0
 User = ""
 class SampleApp(Tk):
 
 	def __init__(self, *args, **kwargs):
 		Tk.__init__(self, *args, **kwargs)
+		Tk.wm_title(self, "Learn Interactive 2016")
 
 		container = Frame(self)
+
 		container.pack(side="top", fill="both", expand=True)
+
 		container.grid_rowconfigure(0, weight=1)
 		container.grid_columnconfigure(0, weight=1)
 
 		self.frames = {}
-		for F in (student_homepage, lessonPage, StartPage, testPage, SetsPage, ResultsStore, firstPage, LoginPage):
+
+		for F in (student_homepage, lessonPage, StartPage, testPage, SetsPage, ResultsStore, LoginPage, Register):
 			page_name = F.__name__
 			frame = F(container, self)
 			self.frames[page_name] = frame
@@ -31,32 +72,73 @@ class SampleApp(Tk):
 		frame.tkraise()
 
 
+class LoginPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        l1 = ttk.Label(self, text="Login", font=LARGE_FONT)
+        l1.pack(pady=10,padx=10)
+
+        l2 = ttk.Label(self, text="User Name")
+        l2.pack(side=LEFT)
+
+        l3 = ttk.Label(self, text="Password ")
+        l3.pack(side=LEFT)
+
+        UserN_input = ttk.Entry(self, width=20)
+        UserN_input.pack(side=RIGHT)
+
+        PW_input = ttk.Entry(self, width=20)
+        PW_input.pack(side=RIGHT)
+
+        LoginBtn = ttk.Button(self, text="Login", command= lambda: verify_details(self, UserN_input, PW_input))
+        LoginBtn.pack(side = BOTTOM)
+
+        RegBtn = ttk.Button(self, text="Register", command= lambda: controller.show_frame("Register"))
+        RegBtn.pack(side = BOTTOM)
+
+    def unsuccessful_login():
+        l4 = ttk.Label(self, text="Inccorect login credentials")
+        l4.pack(side=BOTTOM)
 
 
-class firstPage(Frame):
+class Register(tk.Frame):
 
-	def __init__(self, parent, controller):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        l1 = ttk.Label(self, text="Register", font=LARGE_FONT)
+        l1.pack(pady=10,padx=10)
 
-		Frame.__init__(self, parent)
-		self.controller = controller
+        l2 = ttk.Label(self, text="User Name")
+        l2.pack(side=LEFT)
 
-		self.grid()
-		self.Title()
+        l3 = ttk.Label(self, text="Password ")
+        l3.pack(side=LEFT)
 
-		button1 = Button(self, text="Students", command=lambda: controller.show_frame("student_homepage"))
-		button1.grid(row = 2, column = 4, columnspan = 1, sticky = W)
+        UserN_input = ttk.Entry(self, width=20)
+        UserN_input.pack(side=RIGHT)
 
-		button1 = Button(self, text="Lecturers", command=lambda: controller.show_frame("ResultsStore"))
-		button1.grid(row = 3, column = 4, columnspan = 1, sticky = W)
+        PW_input = ttk.Entry(self, width=20)
+        PW_input.pack(side=RIGHT)
 
+        RegBtn = ttk.Button(self, text="Register", command= lambda: insert_account(UserN_input,PW_input,1))
+        RegBtn.pack(side = BOTTOM)
 
-	def Title(self):
+        button4 = ttk.Button(self, text="Back", command=lambda: controller.show_frame("LoginPage"))
+        button4.pack(side = RIGHT)
 
-		lblHomepageTitle = Label(self, text = 'Learn Interactive 2016               \n', font = ('calibri', 22, 'bold'))
-		lblHomepageTitle.grid(row = 1, column = 4, columnspan = 2, sticky = N)
+######################################################################################
+#currently, a successful login goes to the student_homepage, regardless of who logs in. We still need to add some some of way to distinguish between lecturers and students so we can load the correct page after a login.
 
+# class LoggedIn(tk.Frame):
 
+#     def __init__(self, parent, controller):
+#         tk.Frame.__init__(self, parent)
 
+#         label = ttk.Label(self, text="Login Successful", font=LARGE_FONT)
+#         label.pack(pady=10,padx=10)
+######################################################################################
 
 
 class student_homepage(Frame):
@@ -70,14 +152,8 @@ class student_homepage(Frame):
 		self.grid()
 		self.Title()
 		self.TopicSelect()
-	    # self.TakeTestButton()
-		self.TestWindow
-		# self.ViewLessonButton()
-		# self.LessonWindow
-		#self.TestResultsButton()
 		self.LayoutPadding()
-		#self.ResultsWindow
-		self.LogoutButton()
+		# self.LogoutButton()
 
 		button1 = Button(self, text="Binary Conversion Lesson", command=lambda: controller.show_frame("StartPage"))
 		button1.grid(row = 3, column = 4, columnspan = 1, sticky = W)
@@ -88,9 +164,10 @@ class student_homepage(Frame):
 		button3 = Button(self, text="View Results", command=lambda: controller.show_frame("ResultsStore"))
 		button3.grid(row = 5, column = 3, columnspan = 1, sticky = E)
 
-		button4 = Button(self, text="Back", command=lambda: controller.show_frame("firstPage"))
+		button4 = Button(self, text="Logout", command=lambda: controller.show_frame("LoginPage"))
 		button4.grid(row = 6, column = 3, columnspan = 1, sticky = W)
 
+		
 	def Title(self):
 
 		lblHomepageTitle = Label(self, text = 'Learn Interactive 2016               \n', font = ('calibri', 22, 'bold'))
@@ -102,75 +179,11 @@ class student_homepage(Frame):
 		lblChooseTopic = Label(self, text = 'Choose Topic \n \n', font = ('calibri', 12, 'bold'))
 		lblChooseTopic.grid(row = 2, column = 2, columnspan = 1, sticky = N)
 
-		#how to make drop down menu
-
-		# menuDefault = StringVar(root)
-		# menuDefault.set("Sets & Probability")
-
-		# menu = OptionMenu(root, menuDefault, "Sets & Probability", "Binary Conversion")
-		# menu.pack
-
-		lblMenuPlaceholder = Label(self, text = 'dropdown menu placeholder', font = ('calibri', 12, 'bold'))
-		lblMenuPlaceholder.grid(row = 2, column = 4, columnspan = 1, sticky	= NE)
-
-
-	# def TakeTestButton(self):
-
-	# 	buttonTakeTest = Button(self, text = 'Take Test', font = ('calibri', 12, 'bold'))
-	# 	buttonTakeTest.grid(row = 3, column = 2, columnspan = 1, sticky = E)
-	# 	buttonTakeTest['command'] = self.TestWindow
-
-
-	def TestWindow(self):
-
-		#need to limit to 1 window max
-		
-		testWindow = Toplevel(self)
-		testWindow.title("whichever test is selected")
-		testLabel = Label(testWindow, text = "whichever test is selected")
-		testLabel.pack(side = "top", fill = "both", expand = True, padx = 100, pady = 100)
-
-
-	# def ViewLessonButton(self):
-
-	# 	buttonViewLesson = Button(self, text = 'View Lesson', font = ('calibri', 12, 'bold'))
-	# 	buttonViewLesson['command'] = self.LessonWindow
-	# 	buttonViewLesson.grid(row = 3, column = 4, columnspan = 1, sticky = E)
-	
-		
 
 	def createLessonTitle(self):
 
 		lblLessonTitle = Label(self, text='"Binary Conversion" \n', font=('MS', 22, 'bold'))
 		lblLessonTitle.grid(row=1, column=6, columnspan=3, sticky=N)
-
-
-
-	# def LessonWindow(self):
-
-	# 	#need to limit to 1 window max
-
-	# 	lessonWindow = Toplevel(self)
-	# 	lessonWindow.title("whichever lesson is selected")
-	# 	lessonLabel = Label(lessonWindow, text = "whichever lesson is selected")
-	# 	lessonLabel.pack(side = "top", fill = "both", expand = True, padx = 100, pady = 100)
-
-
-	#def TestResultsButton(self):
-
-		#buttonTestResults = Button(self, text = 'View My Test Results', font = ('calibri', 12, 'bold'))
-		#buttonTestResults['command'] = self.ResultsWindow
-		#buttonTestResults.grid(row = 5, column = 3, columnspan = 2, sticky = N)
-
-
-	#def ResultsWindow(self):
-
-		#need to limit to 1 window max
-
-		#resultsWindow = Toplevel(self)
-		#resultsWindow.title("Test Results")
-		#resultsLabel = Label(resultsWindow, text = "results for student who is logged in")
-		#resultsLabel.pack(side = "top", fill = "both", expand = True, padx = 100, pady = 100)
 
 
 	def LayoutPadding(self):
@@ -185,14 +198,12 @@ class student_homepage(Frame):
 		lblTopLogoutPadding.grid(row = 6, column = 5, columnspan = 1)
 
 
-	def LogoutButton(self):
+	# def LogoutButton(self):
 
-		buttonLogout = Button(self, text = 'Logout', font = ('calibri', 12, 'bold'))
+	# 	buttonLogout = Button(self, text = 'Logout', font = ('calibri', 12, 'bold'))
+	# 	buttonLogout.grid(row = 7, column = 5, columnspan = 1, sticky = N)
 
-		# logout functionality needed for button command
-		# buttonLogout['command'] = ??
-
-		buttonLogout.grid(row = 7, column = 5, columnspan = 1, sticky = N)
+		
 
 
 class lessonPage(Frame):								#why is this class here?
@@ -987,7 +998,7 @@ class ResultsStore(Frame):
 		self.controller = controller
 		self.grid()
 
-		button2 = Button(self, text="Back ", command=lambda: controller.show_frame("firstPage"))
+		button2 = Button(self, text="Back ", command=lambda: controller.show_frame("student_homepage"))
 		button2.grid(row = 24, column = 6, columnspan = 1, sticky = W)
 
 		if rights == "1":
