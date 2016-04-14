@@ -58,7 +58,7 @@ class SampleApp(Tk):
 
 		self.frames = {}
 
-		for F in (student_homepage, lessonPage, StartPage, testPage, SetsPage, ResultsStore, LoginPage, Register):
+		for F in (student_homepage, lessonPage, StartPage, binaryTestPage, SetsPage, ResultsStore, LoginPage, Register, setsTestPage):
 			page_name = F.__name__
 			frame = F(container, self)
 			self.frames[page_name] = frame
@@ -240,7 +240,7 @@ class StartPage(Frame): 								#change name to binaryLesson
 		self.createLessonContent()
 
 		button1 = Button(self, text="Take Test",
-							command=lambda: controller.show_frame("testPage"))
+							command=lambda: controller.show_frame("binaryTestPage"))
 		button1.grid(row=23, column=19, columnspan=1, sticky=W)
 
 		button2 = Button(self, text="Back", command=lambda: controller.show_frame("student_homepage"))
@@ -312,7 +312,7 @@ class StartPage(Frame): 								#change name to binaryLesson
 		lblLessonContent9.grid(row=22, column=6, columnspan=3)
 
 
-class testPage(Frame):
+class binaryTestPage(Frame):
 
 	def __init__(self, parent, controller):
 
@@ -614,7 +614,7 @@ class SetsPage(Frame):
 
 
 		TakeTest = Button(self, text="Take Test",
-							command=lambda: controller.show_frame("testPage"))
+							command=lambda: controller.show_frame("setsTestPage"))
 		TakeTest.grid(row=23, column=19, columnspan=1, sticky=W)
 
 		button2 = Button(self, text="Back ", command=lambda: controller.show_frame("student_homepage"))
@@ -703,7 +703,7 @@ class SetsPage(Frame):
 	# 	test.title("Sets Test")
 
 
-class testPage(Frame):
+class setsTestPage(Frame):
 
 	def __init__(self, parent, controller):
 
