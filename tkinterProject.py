@@ -544,6 +544,7 @@ class binaryTestPage(Frame):
 
 		#Start of Response Method
 
+		theUser = 'c1535751'
 		theScore = 0
 		strMsg=""
 
@@ -932,7 +933,7 @@ class setsTestPage(Frame):
 	def storeResult(self):
 
 		#Start of Response Method
-
+		theUser = 'c1535751'
 		theScore = 0
 		strMsg=""
 
