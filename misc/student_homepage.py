@@ -28,22 +28,26 @@ class SampleApp(Tk):
 		frame = self.frames[page_name]
 		frame.tkraise()
 
-#Start of student_homepage------------------------------------------------------------------------------------------------------------------------------------
+
 
 class student_homepage(Frame):
 
 	def __init__(self, parent, controller):
 
 		Frame.__init__(self, parent)
-		# parent.minsize(width=200, height=150)
-		# parent.maxsize(width=200, height=150)
 		self.controller = controller
 
 
 		self.grid()
 		self.Title()
 		self.TopicSelect()
+	    # self.TakeTestButton()
+		self.TestWindow
+		# self.ViewLessonButton()
+		# self.LessonWindow
+		#self.TestResultsButton()
 		self.LayoutPadding()
+		#self.ResultsWindow
 		self.LogoutButton()
 
 		button1 = Button(self, text="Binary Conversion Lesson", command=lambda: controller.show_frame("StartPage"))
@@ -66,11 +70,75 @@ class student_homepage(Frame):
 		lblChooseTopic = Label(self, text = 'Choose Topic \n \n', font = ('calibri', 12, 'bold'))
 		lblChooseTopic.grid(row = 2, column = 2, columnspan = 1, sticky = N)
 
+		#how to make drop down menu
+
+		# menuDefault = StringVar(root)
+		# menuDefault.set("Sets & Probability")
+
+		# menu = OptionMenu(root, menuDefault, "Sets & Probability", "Binary Conversion")
+		# menu.pack
+
+		lblMenuPlaceholder = Label(self, text = 'dropdown menu placeholder', font = ('calibri', 12, 'bold'))
+		lblMenuPlaceholder.grid(row = 2, column = 4, columnspan = 1, sticky	= NE)
+
+
+	# def TakeTestButton(self):
+
+	# 	buttonTakeTest = Button(self, text = 'Take Test', font = ('calibri', 12, 'bold'))
+	# 	buttonTakeTest.grid(row = 3, column = 2, columnspan = 1, sticky = E)
+	# 	buttonTakeTest['command'] = self.TestWindow
+
+
+	def TestWindow(self):
+
+		#need to limit to 1 window max
+		
+		testWindow = Toplevel(self)
+		testWindow.title("whichever test is selected")
+		testLabel = Label(testWindow, text = "whichever test is selected")
+		testLabel.pack(side = "top", fill = "both", expand = True, padx = 100, pady = 100)
+
+
+	# def ViewLessonButton(self):
+
+	# 	buttonViewLesson = Button(self, text = 'View Lesson', font = ('calibri', 12, 'bold'))
+	# 	buttonViewLesson['command'] = self.LessonWindow
+	# 	buttonViewLesson.grid(row = 3, column = 4, columnspan = 1, sticky = E)
+	
+		
 
 	def createLessonTitle(self):
 
 		lblLessonTitle = tk.Label(self, text='"Binary Conversion" \n', font=('MS', 22, 'bold'))
 		lblLessonTitle.grid(row=1, column=6, columnspan=3, sticky=tk.N)
+
+
+
+	# def LessonWindow(self):
+
+	# 	#need to limit to 1 window max
+
+	# 	lessonWindow = Toplevel(self)
+	# 	lessonWindow.title("whichever lesson is selected")
+	# 	lessonLabel = Label(lessonWindow, text = "whichever lesson is selected")
+	# 	lessonLabel.pack(side = "top", fill = "both", expand = True, padx = 100, pady = 100)
+
+
+	#def TestResultsButton(self):
+
+		#buttonTestResults = Button(self, text = 'View My Test Results', font = ('calibri', 12, 'bold'))
+		#buttonTestResults['command'] = self.ResultsWindow
+		#buttonTestResults.grid(row = 5, column = 3, columnspan = 2, sticky = N)
+
+
+	#def ResultsWindow(self):
+
+		#need to limit to 1 window max
+
+		#resultsWindow = Toplevel(self)
+		#resultsWindow.title("Test Results")
+		#resultsLabel = Label(resultsWindow, text = "results for student who is logged in")
+		#resultsLabel.pack(side = "top", fill = "both", expand = True, padx = 100, pady = 100)
 
 
 	def LayoutPadding(self):
@@ -93,14 +161,6 @@ class student_homepage(Frame):
 		# buttonLogout['command'] = ??
 
 		buttonLogout.grid(row = 7, column = 5, columnspan = 1, sticky = N)
-
-
-#End of student_homepage--------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
 
 
 class lessonPage(Frame):
@@ -618,15 +678,15 @@ class testPage(tk.Frame):
 		tk.Frame.__init__(self, parent)
 		self.controller = controller
 		self.grid()
-		self.Binary_Title()
+		self.Sets_Title()
 		self.setQuestions()
 		self.studentNumEntry()
 		self.addButtons()
 		self.storeResult
 
 
-	def Binary_Title(self):
-		theTitle = tk.Label(self, text="Binary Test", font=('MS', 22, 'bold'))
+	def Sets_Title(self):
+		theTitle = tk.Label(self, text="Sets Test", font=('MS', 22, 'bold'))
 		theTitle.grid(row=0, column=5, columnspan=2)
 
 	def setQuestions(self):
@@ -634,27 +694,25 @@ class testPage(tk.Frame):
 		lblDesc1 = tk.Label(self, text='Multiple Choice Questions:', font=('MS', 10,'bold'))
 		lblDesc1.grid(row=3, column = 3)
 
-		lblDesc2 = tk.Label(self, text='For each of the following, convert the decimal numbers (base 10) into octal (base 8) and choose an answer:', font=('MS', 10))
-		lblDesc2.grid(row=3, column = 4, columnspan=5, sticky=tk.W)
 
 		#Start Of Question 1
 
-		lblQ1 = tk.Label(self, text='\nQuestion 1): ', font=('MS', 10,'bold'))
+		lblQ1 = tk.Label(self, text='\nQuestion 1): ', font=('MS', 9,'bold'))
 		lblQ1.grid(row=6, column = 4)
 
-		lblQ1_Question = tk.Label(self, text='\nWhat is 18 (10) in octal?', font=('MS', 10))
+		lblQ1_Question = tk.Label(self, text='\nWhat is the cardinality of the set S= {3, 6, 9, 12}?', font=('MS', 9))
 		lblQ1_Question.grid(row=6, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ1_ChoiceA = tk.Label(self, text='A) 19 (8)', font=('MS', 10))
+		lblQ1_ChoiceA = tk.Label(self, text='A) One')
 		lblQ1_ChoiceA.grid(row=7, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ1_ChoiceB = tk.Label(self, text='B) 20 (8)', font=('MS', 10))
+		lblQ1_ChoiceB = tk.Label(self, text='B) Two')
 		lblQ1_ChoiceB.grid(row=8, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ1_ChoiceC = tk.Label(self, text='C) 21 (8)', font=('MS', 10))
+		lblQ1_ChoiceC = tk.Label(self, text='C) Three')
 		lblQ1_ChoiceC.grid(row=9, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ1_ChoiceD = tk.Label(self, text='D) 22 (8)', font=('MS', 10))
+		lblQ1_ChoiceD = tk.Label(self, text='D) Four')
 		lblQ1_ChoiceD.grid(row=10, column = 5, columnspan=1, sticky=tk.W)
 
 		self.varQ1 = tk.IntVar()
@@ -673,22 +731,22 @@ class testPage(tk.Frame):
 
 		#Start of Question 2
 
-		lblQ2 = tk.Label(self, text='\nQuestion 2): ', font=('MS', 10,'bold'))
+		lblQ2 = tk.Label(self, text='\nQuestion 2): ', font=('MS', 9,'bold'))
 		lblQ2.grid(row=11, column = 4)
 
-		lblQ2_Question = tk.Label(self, text='\nWhat is 156 (10) in octal?', font=('MS', 10))
+		lblQ2_Question = tk.Label(self, text='\nThe set of all rational numbers is denoted by:', font=('MS', 9))
 		lblQ2_Question.grid(row=11, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ2_ChoiceA = tk.Label(self, text='A) 212 (8)', font=('MS', 10))
+		lblQ2_ChoiceA = tk.Label(self, text='A) ℕ')
 		lblQ2_ChoiceA.grid(row=12, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ2_ChoiceB = tk.Label(self, text='B) 220 (8)', font=('MS', 10))
+		lblQ2_ChoiceB = tk.Label(self, text='B) ℝ')
 		lblQ2_ChoiceB.grid(row=13, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ2_ChoiceC = tk.Label(self, text='C) 234 (8)', font=('MS', 10))
+		lblQ2_ChoiceC = tk.Label(self, text='C) ℕ')
 		lblQ2_ChoiceC.grid(row=14, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ2_ChoiceD = tk.Label(self, text='D) 242 (8)', font=('MS', 10))
+		lblQ2_ChoiceD = tk.Label(self, text='D) ℝ')
 		lblQ2_ChoiceD.grid(row=15, column = 5, columnspan=1, sticky=tk.W)
 
 		self.varQ2 = tk.IntVar()
@@ -707,22 +765,22 @@ class testPage(tk.Frame):
 
 		#Start of Question 3
 
-		lblQ3 = tk.Label(self, text='\nQuestion 3): ', font=('MS', 10,'bold'))
+		lblQ3 = tk.Label(self, text='\nQuestion 3): ', font=('MS', 9,'bold'))
 		lblQ3.grid(row=16, column = 4)
 
-		lblQ3_Question = tk.Label(self, text='\nWhat is 1267 (10) in octal?', font=('MS', 10))
+		lblQ3_Question = tk.Label(self, text='\nThe notation x ∈ S means :', font=('MS', 9))
 		lblQ3_Question.grid(row=16, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ3_ChoiceA = tk.Label(self, text='A) 2109 (8)', font=('MS', 10))
+		lblQ3_ChoiceA = tk.Label(self, text='A) “x is an element of S”')
 		lblQ3_ChoiceA.grid(row=17, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ3_ChoiceB = tk.Label(self, text='B) 2163 (8)', font=('MS', 10))
+		lblQ3_ChoiceB = tk.Label(self, text='B) “x is not an element of S”')
 		lblQ3_ChoiceB.grid(row=18, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ3_ChoiceC = tk.Label(self, text='C) 2363 (8)', font=('MS', 10))
+		lblQ3_ChoiceC = tk.Label(self, text='C) “x is a subset of S”')
 		lblQ3_ChoiceC.grid(row=19, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ3_ChoiceD = tk.Label(self, text='D) 2451 (8)', font=('MS', 10))
+		lblQ3_ChoiceD = tk.Label(self, text='D) x is a Proper set of S')
 		lblQ3_ChoiceD.grid(row=20, column = 5, columnspan=1, sticky=tk.W)
 
 		self.varQ3 = tk.IntVar()
@@ -741,22 +799,22 @@ class testPage(tk.Frame):
 
 		#Start of Question 4
 
-		lblQ4 = tk.Label(self, text='\nQuestion 4): ', font=('MS', 10,'bold'))
+		lblQ4 = tk.Label(self, text='\nQuestion 4): ', font=('MS', 9,'bold'))
 		lblQ4.grid(row=21, column = 4)
 
-		lblQ4_Question = tk.Label(self, text='\nWhat is 4000 (8) in decimal?', font=('MS', 10))
+		lblQ4_Question = tk.Label(self, text='\nThe power set is:', font=('MS', 9))
 		lblQ4_Question.grid(row=21, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ4_ChoiceA = tk.Label(self, text='A) 2048 (10)', font=('MS', 10))
+		lblQ4_ChoiceA = tk.Label(self, text='The set of all possible elements.')
 		lblQ4_ChoiceA.grid(row=22, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ4_ChoiceB = tk.Label(self, text='B) 2060 (10)', font=('MS', 10))
+		lblQ4_ChoiceB = tk.Label(self, text='The set with zero elements.')
 		lblQ4_ChoiceB.grid(row=23, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ4_ChoiceC = tk.Label(self, text='C) 2084 (10)', font=('MS', 10))
+		lblQ4_ChoiceC = tk.Label(self, text='C) The set of all subsets.')
 		lblQ4_ChoiceC.grid(row=24, column = 5, columnspan=1, sticky=tk.W)
 
-		lblQ4_ChoiceD = tk.Label(self, text='D) 2101 (10)', font=('MS', 10))
+		lblQ4_ChoiceD = tk.Label(self, text='D) None of the above.')
 		lblQ4_ChoiceD.grid(row=25, column = 5, columnspan=1, sticky=tk.W)
 
 		self.varQ4 = tk.IntVar()
@@ -775,22 +833,22 @@ class testPage(tk.Frame):
 
 		#Start of Question 5
 
-		lblQ5 = tk.Label(self, text='\nQuestion 5): ', font=('MS', 10,'bold'))
+		lblQ5 = tk.Label(self, text='\nQuestion 5): ', font=('MS', 9,'bold'))
 		lblQ5.grid(row=26, column = 4)
 
-		lblQ5_Question = tk.Label(self, text='\nWhat is 127 (8) in decimal?', font=('MS', 10))
+		lblQ5_Question = tk.Label(self, text='\n{x : x ∈ A or x ∈ B} means:', font=('MS', 9))
 		lblQ5_Question.grid(row=26, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ5_ChoiceA = tk.Label(self, text='A) 87 (10)', font=('MS', 10))
+		lblQ5_ChoiceA = tk.Label(self, text='A) Intersection of sets A,B.')
 		lblQ5_ChoiceA.grid(row=27, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ5_ChoiceB = tk.Label(self, text='B) 94 (10)', font=('MS', 10))
+		lblQ5_ChoiceB = tk.Label(self, text='B) Difference  of sets A,B.')
 		lblQ5_ChoiceB.grid(row=28, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ5_ChoiceC = tk.Label(self, text='C) 96 (10)', font=('MS', 10))
+		lblQ5_ChoiceC = tk.Label(self, text='C) complement of sets A,B.')
 		lblQ5_ChoiceC.grid(row=29, column = 5, columnspan=2, sticky=tk.W)
 
-		lblQ5_ChoiceD = tk.Label(self, text='D) 88 (10)', font=('MS', 10))
+		lblQ5_ChoiceD = tk.Label(self, text='D)Union of sets A,B.')
 		lblQ5_ChoiceD.grid(row=30, column = 5, columnspan=1, sticky=tk.W)
 
 		self.varQ5 = tk.IntVar()
@@ -853,25 +911,25 @@ class testPage(tk.Frame):
 			strMsg = strMsg + "\nPlease enter your student number!"
 
 		answer_q1 = 1
-		answer_q2 = 2
-		answer_q3 = 2
-		answer_q4 = 4
-		answer_q5 = 4
+		answer_q2 = 4
+		answer_q3 = 4
+		answer_q4 = 2
+		answer_q5 = 1
 
 
 		if (self.varQ1.get() == 1):
 			theScore = theScore + 1
 
-		if (self.varQ2.get() == 2):
+		if (self.varQ2.get() == 4):
 			theScore = theScore + 1
 
-		if (self.varQ3.get() == 2):
+		if (self.varQ3.get() == 4):
 			theScore = theScore + 1
 
-		if (self.varQ4.get() == 4):
+		if (self.varQ4.get() == 2):
 			theScore = theScore + 1
 
-		if (self.varQ5.get() == 4):
+		if (self.varQ5.get() == 1):
 			theScore = theScore + 1
 
 		if strMsg == "":
@@ -1034,10 +1092,3 @@ if __name__ == "__main__":
 
 	app = SampleApp()
 	app.mainloop()
-
-	# root = Tk()
-	# root.title("Learn Interactive 2016")
-	# main = student_homepage(root)
-	# main.pack(side = "top", fill = "both", expand = True)
-	# root.config(background = 'white')
-	# root.mainloop()
