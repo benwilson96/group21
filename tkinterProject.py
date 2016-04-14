@@ -558,27 +558,32 @@ class testPage(Frame):
 		answer_q3 = 2
 		answer_q4 = 4
 		answer_q5 = 4
-
+		q1answer = "0"
+		q2answer = "0"
+		q3answer = "0"
+		q4answer = "0"
+		q5answer = "0"
 
 		if (self.varQ1.get() == 1):
 			theScore = theScore + 1
-
+			q1answer = "1"
 		if (self.varQ2.get() == 2):
 			theScore = theScore + 1
-
+			q2answer = "1"
 		if (self.varQ3.get() == 2):
 			theScore = theScore + 1
-
+			q3answer = "1"
 		if (self.varQ4.get() == 4):
 			theScore = theScore + 1
-
+			q4answer = "1"
 		if (self.varQ5.get() == 4):
 			theScore = theScore + 1
-
+			q5answer = "1"
 		if strMsg == "":
 
 			messagebox.showinfo("Test", "Your test has been saved and you have scored " + str(theScore) + "/5")
-
+			with open("Results.txt", "a") as ifile:
+				ifile.write("\nB," + theUser + ","+q1answer + "," + q2answer + ","+q3answer+","+q4answer+","+q5answer+","+str(theScore))
 
 		else:
 
@@ -942,30 +947,32 @@ class testPage(Frame):
 		answer_q3 = 4
 		answer_q4 = 2
 		answer_q5 = 1
-
+		q1answer = "0"
+		q2answer = "0"
+		q3answer = "0"
+		q4answer = "0"
+		q5answer = "0"
 
 		if (self.varQ1.get() == 1):
 			theScore = theScore + 1
-
-		if (self.varQ2.get() == 4):
+			q1answer = "1"
+		if (self.varQ2.get() == 2):
 			theScore = theScore + 1
-
-		if (self.varQ3.get() == 4):
+			q2answer = "1"
+		if (self.varQ3.get() == 2):
 			theScore = theScore + 1
-
-		if (self.varQ4.get() == 2):
+			q3answer = "1"
+		if (self.varQ4.get() == 4):
 			theScore = theScore + 1
-
-		if (self.varQ5.get() == 1):
+			q4answer = "1"
+		if (self.varQ5.get() == 4):
 			theScore = theScore + 1
-
+			q5answer = "1"
 		if strMsg == "":
 
 			messagebox.showinfo("Test", "Your test has been saved and you have scored " + str(theScore) + "/5")
-
-			#f = open("Results.txt")
-			#for line in f:
-			#	if line.contains('')
+			with open("Results.txt", "a") as ifile:
+				ifile.write("\nS," + theUser + ","+q1answer + "," + q2answer + ","+q3answer+","+q4answer+","+q5answer+","+str(theScore))
 
 
 		else:
