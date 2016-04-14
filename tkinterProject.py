@@ -1,41 +1,44 @@
+#group21
+
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter as tk
 import pymysql
-#from Login import *
+
 
 LARGE_FONT=("Verdana", 12)
 
 
 
 def verify_details(Page,UN,PW):
-    db = pymysql.connect(host="csmysql.cs.cf.ac.uk", user="c1531722", passwd="pE9zby3j", db="c1531722")
-    cursor = db.cursor()
-    cursor.execute("SELECT Username, Password, Admin FROM Accounts")
+	db = pymysql.connect(host="csmysql.cs.cf.ac.uk", user="c1531722", passwd="pE9zby3j", db="c1531722")
+	cursor = db.cursor()
+	cursor.execute("SELECT Username, Password, Admin FROM Accounts")
 
-    InputUN = UN.get()
-    InputPW = PW.get()
-    for UN, PW, ADM in cursor:
-        if UN == InputUN and PW == InputPW:
-            app.show_frame("student_homepage")	#needs to distinguish between lecturers/students
+	InputUN = UN.get()
+	InputPW = PW.get()
+	for UN, PW, ADM in cursor:
+		if UN == InputUN and PW == InputPW:
+			app.show_frame("student_homepage")	#needs to distinguish between lecturers/students
 
-            break
-    if not(UN == InputUN and PW == InputPW):
-        Page.unsuccessful_login()
+			break
+	if not(UN == InputUN and PW == InputPW):
+		app.show_frame("unsuccessfulLogin")
+		#Page.unsuccessful_login()
 
-    db.close()
+	db.close()
 
 def insert_account(UN,PW,Admin):
-    db = pymysql.connect(host="csmysql.cs.cf.ac.uk", user="c1531722", passwd="pE9zby3j", db="c1531722")
-    cursor = db.cursor()
-    cursor.execute("SELECT ID FROM Accounts ORDER BY ID DESC")
-    ID = cursor.fetchone()
-    InputUN = UN.get()
-    InputPW = PW.get()
-    cursor.execute('''INSERT INTO `c1531722`.`Accounts` (`ID`, `Username`, `Password`, `Admin`) VALUES (%s, %s, %s, %s);''',(ID[0]+1,InputUN,InputPW,Admin))
-    db.commit()
-    db.close()
+	db = pymysql.connect(host="csmysql.cs.cf.ac.uk", user="c1531722", passwd="pE9zby3j", db="c1531722")
+	cursor = db.cursor()
+	cursor.execute("SELECT ID FROM Accounts ORDER BY ID DESC")
+	ID = cursor.fetchone()
+	InputUN = UN.get()
+	InputPW = PW.get()
+	cursor.execute('''INSERT INTO `c1531722`.`Accounts` (`ID`, `Username`, `Password`, `Admin`) VALUES (%s, %s, %s, %s);''',(ID[0]+1,InputUN,InputPW,Admin))
+	db.commit()
+	db.close()
 
 
 
@@ -58,7 +61,7 @@ class SampleApp(Tk):
 
 		self.frames = {}
 
-		for F in (student_homepage, lessonPage, StartPage, binaryTestPage, SetsPage, ResultsStore, LoginPage, Register, setsTestPage):
+		for F in (student_homepage, lessonPage, StartPage, binaryTestPage, SetsPage, ResultsStore, LoginPage, Register, setsTestPage, unsuccessfulLogin):
 			page_name = F.__name__
 			frame = F(container, self)
 			self.frames[page_name] = frame
@@ -75,59 +78,67 @@ class SampleApp(Tk):
 
 class LoginPage(tk.Frame):
 
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
 
-        l1 = ttk.Label(self, text="Login", font=LARGE_FONT)
-        l1.pack(pady=10,padx=10)
+		l1 = ttk.Label(self, text="Login", font=LARGE_FONT)
+		l1.pack(pady=10,padx=10)
 
-        l2 = ttk.Label(self, text="User Name")
-        l2.pack(side=LEFT)
+		l2 = ttk.Label(self, text="User Name")
+		l2.pack(side=LEFT)
 
-        l3 = ttk.Label(self, text="Password ")
-        l3.pack(side=LEFT)
+		l3 = ttk.Label(self, text="Password ")
+		l3.pack(side=LEFT)
 
-        UserN_input = ttk.Entry(self, width=20)
-        UserN_input.pack(side=RIGHT)
+		UserN_input = ttk.Entry(self, width=20)
+		UserN_input.pack(side=RIGHT)
 
-        PW_input = ttk.Entry(self, width=20)
-        PW_input.pack(side=RIGHT)
+		PW_input = ttk.Entry(self, width=20)
+		PW_input.pack(side=RIGHT)
 
-        LoginBtn = ttk.Button(self, text="Login", command= lambda: verify_details(self, UserN_input, PW_input))
-        LoginBtn.pack(side = BOTTOM)
+		LoginBtn = ttk.Button(self, text="Login", command= lambda: verify_details(self, UserN_input, PW_input))
+		LoginBtn.pack(side = BOTTOM)
 
-        RegBtn = ttk.Button(self, text="Register", command= lambda: controller.show_frame("Register"))
-        RegBtn.pack(side = BOTTOM)
+		RegBtn = ttk.Button(self, text="Register", command= lambda: controller.show_frame("Register"))
+		RegBtn.pack(side = BOTTOM)
 
-    def unsuccessful_login():
-        l4 = ttk.Label(self, text="Inccorect login credentials")
-        l4.pack(side=BOTTOM)
+
+class unsuccessfulLogin(tk.Frame):
+
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+
+		l4 = ttk.Label(self, text="Inccorect login credentials")
+		l4.pack(side=LEFT)
+
+		button4 = ttk.Button(self, text="Retry", command=lambda: controller.show_frame("LoginPage"))
+		button4.pack(side = RIGHT)
 
 
 class Register(tk.Frame):
 
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        l1 = ttk.Label(self, text="Register", font=LARGE_FONT)
-        l1.pack(pady=10,padx=10)
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		l1 = ttk.Label(self, text="Register", font=LARGE_FONT)
+		l1.pack(pady=10,padx=10)
 
-        l2 = ttk.Label(self, text="User Name")
-        l2.pack(side=LEFT)
+		l2 = ttk.Label(self, text="User Name")
+		l2.pack(side=LEFT)
 
-        l3 = ttk.Label(self, text="Password ")
-        l3.pack(side=LEFT)
+		l3 = ttk.Label(self, text="Password ")
+		l3.pack(side=LEFT)
 
-        UserN_input = ttk.Entry(self, width=20)
-        UserN_input.pack(side=RIGHT)
+		UserN_input = ttk.Entry(self, width=20)
+		UserN_input.pack(side=RIGHT)
 
-        PW_input = ttk.Entry(self, width=20)
-        PW_input.pack(side=RIGHT)
+		PW_input = ttk.Entry(self, width=20)
+		PW_input.pack(side=RIGHT)
 
-        RegBtn = ttk.Button(self, text="Register", command= lambda: insert_account(UserN_input,PW_input,1))
-        RegBtn.pack(side = BOTTOM)
+		RegBtn = ttk.Button(self, text="Register", command= lambda: insert_account(UserN_input,PW_input,1))
+		RegBtn.pack(side = BOTTOM)
 
-        button4 = ttk.Button(self, text="Back", command=lambda: controller.show_frame("LoginPage"))
-        button4.pack(side = RIGHT)
+		button4 = ttk.Button(self, text="Back", command=lambda: controller.show_frame("LoginPage"))
+		button4.pack(side = RIGHT)
 
 ######################################################################################
 #currently, a successful login goes to the student_homepage, regardless of who logs in. We still need to add some some of way to distinguish between lecturers and students so we can load the correct page after a login.
