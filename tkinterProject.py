@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 import tkinter as tk
 import pymysql
 #from Login import *
@@ -587,24 +588,6 @@ class testPage(Frame):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #SETS LESSON
 #change content of lesson and test to sets.
 
@@ -724,7 +707,7 @@ class testPage(Frame):
 		self.grid()
 		self.Sets_Title()
 		self.setQuestions()
-		self.studentNumEntry()
+		#self.studentNumEntry()
 		self.addButtons()
 		self.storeResult
 
@@ -909,18 +892,18 @@ class testPage(Frame):
 
 		#----------------------------------------------------------------------------------------------------------------------------#
 
-	def studentNumEntry(self):
+	#def studentNumEntry(self):
 
 		#Start of Student ID text box
 
-		lbl_blank1 = Label(self, text=' ', font=('MS', 10,'bold'))
-		lbl_blank1.grid(row=31, column = 1)
+		#lbl_blank1 = Label(self, text=' ', font=('MS', 10,'bold'))
+		#lbl_blank1.grid(row=31, column = 1)
 
-		lbl_ID = Label(self, text='Enter your student number:', font=('MS', 10,'bold'))
-		lbl_ID.grid(row=32, column = 5, sticky=W)
+		#lbl_ID = Label(self, text='Enter your student number:', font=('MS', 10,'bold'))
+		#lbl_ID.grid(row=32, column = 5, sticky=W)
 
-		self.entName = Entry(self)
-		self.entName.grid(row=32, column=5, columnspan=2, sticky=E) 
+		#self.entName = Entry(self)
+		#self.entName.grid(row=32, column=5, columnspan=2, sticky=E) 
 
 		#End of Student ID text box
 
@@ -951,8 +934,8 @@ class testPage(Frame):
 		if (self.varQ1.get()== 0) or (self.varQ2.get() == 0) or (self.varQ3.get() == 0) or (self.varQ4.get() == 0) or (self.varQ5.get() == 0):
 			strMsg = strMsg + "You need to answer all questions! "
 
-		if (self.entName.get() == ""):
-			strMsg = strMsg + "\nPlease enter your student number!"
+		#if (self.entName.get() == ""):
+			#strMsg = strMsg + "\nPlease enter your student number!"
 
 		answer_q1 = 1
 		answer_q2 = 4
